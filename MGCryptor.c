@@ -19,6 +19,7 @@
 #include "MGEncryptor.h"
 #include "MGDecryptor.h"
 #include "PBKDF2/pkcs5_pbkdf2.h"
+#include "HMAC/hmac-sha1.h"
 #include "debug.h"
 
 //first version(2),second platform(android)
@@ -39,9 +40,8 @@ int MGEncryptor(void* message, size_t messagelen, void * password, size_t passwo
 
 	//generate the encryption key salt
 	randBuffer(salt, SIZE_SALT);
-	__FILE__, __LINE__, __func__;
 
-	LOGD(__func__);
+
 
 	memcpy((pOutBuffer+OFFSET_ENCSALT), salt, SIZE_SALT);
 
@@ -59,14 +59,11 @@ int MGEncryptor(void* message, size_t messagelen, void * password, size_t passwo
 
 	//do the AES128 in CBC mode directly to the output array and return the lenght of the bytes
 	len = encAES128cbc(keyword, IV, pOutBuffer+OFFSET_CIPHER, plainBuffer, messagelen);
-
 	//calculate the lenght of complete array where do the hmac-sha1
 	len = len + SIZE_VERSION+SIZE_SALT+SIZE_SALT+SIZE_IV;
-
 	//generate the HMAC key salt
 	randBuffer(salt, SIZE_SALT);
 	memcpy((pOutBuffer+OFFSET_HMACSALT), salt, SIZE_SALT);
-
 	//generate the HMAC key
 	if (pkcs5_pbkdf2(password, passwordlen, salt, SIZE_SALT, keyword, sizeof(keyword), 10000))
 	{
@@ -75,12 +72,12 @@ int MGEncryptor(void* message, size_t messagelen, void * password, size_t passwo
 
 	//do the HMAC-SHA1 directoy to the output array
 	hmac_sha1(keyword, sizeof(keyword), pOutBuffer, len, pOutBuffer+len);
-
 	//calculate the lenght of complete array
 	len = len + SIZE_HMAC;
-
 	return len;
+//	return 0;
 }
+
 
 //perform the decryption and return the lenght of data in the plainBuffer pre-allocated array
 int MGDecryptor(void* pInBuffer, size_t inbufferlen, void * password, size_t passwordlen, void* pOutBuffer)

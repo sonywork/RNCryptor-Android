@@ -48,7 +48,7 @@ static jbyteArray Encrypto(JNIEnv *env, jobject thiz, jbyteArray ba, jint tp)
 //	monstartup("libjcryptoc.so");
 //	LOGPOS();
 	char * data = (*env)->GetByteArrayElements(env, ba, 0);
-	int len = (*env)->GetArrayLength(env, ba);
+//	int len = (*env)->GetArrayLength(env, ba);
 	int type = tp;
 
 	char * key;
@@ -63,8 +63,8 @@ static jbyteArray Encrypto(JNIEnv *env, jobject thiz, jbyteArray ba, jint tp)
 	int cipherBufferLen;
 
 	void * cipherBuffer = malloc(CIPHER_BUFFER_LEN);
-
-	cipherBufferLen = MGEncryptor(data, len, key, strlen(key), cipherBuffer);
+	LOGD("CIPHER_BUFFER_LEN=%d",CIPHER_BUFFER_LEN);
+	cipherBufferLen = MGEncryptor(data, strlen(data), key, strlen(key), cipherBuffer);
 
 	unsigned long enDataLen;
 	char* enData = (char*)malloc(BUFFER_LEN);

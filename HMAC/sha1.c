@@ -138,15 +138,16 @@ sha1_process_bytes (const void *buffer, size_t len, struct sha1_ctx *ctx)
   if (len >= 64)
     {
 #if !_STRING_ARCH_unaligned
+# define alignof(type) offsetof (struct { char c; type x; }, x)
 # define UNALIGNED_P(p) ((uintptr_t) (p) % alignof (uint32_t) != 0)
-//todo:      if (UNALIGNED_P (buffer))
+      if (UNALIGNED_P (buffer))
         while (len > 64)
           {
             sha1_process_block (memcpy (ctx->buffer, buffer, 64), 64, ctx);
             buffer = (const char *) buffer + 64;
             len -= 64;
           }
-//todo:      else
+      else
 #endif
         {
           sha1_process_block (buffer, len & ~63, ctx);

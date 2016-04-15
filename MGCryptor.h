@@ -36,7 +36,7 @@ static const RNCryptorSettings kMGCryptorAES128Settings = {
 
 /* configuration of the project */
 #define DEBUG_LOG		0		/* set to 1 to enable the print log, for debug purpose only */
-#define BUFFER_LEN 2000		/* the malloc is not used in this project, so this is the maximum lenght in byte of the imput data array */
+#define BUFFER_LEN      20000		/* the malloc is not used in this project, so this is the maximum lenght in byte of the imput data array */
 #define KEYBITS 		128		/* do not change this parameters, it represent the AES 128 bit standard */
 
 /* configuration of the data structure stream */

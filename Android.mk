@@ -15,11 +15,11 @@ define all-cpp-files-under
 endef
 
 define all-subdir-cpp-files
-	$(call all-cpp-files-under,./)
+	$(call all-cpp-files-under, .)
 endef
 LOCAL_SRC_FILES := \
 				$(call all-subdir-cpp-files)
-LOCAL_LDLIBS    := -lm -llog -g -lssl
+LOCAL_LDLIBS    := -lm -llog -g 
 
 include $(BUILD_SHARED_LIBRARY)
 

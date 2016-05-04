@@ -32,7 +32,7 @@ int MGEncryptor(void* message, size_t messagelen, void * password, size_t passwo
 	unsigned char keyword[KEYBITS/8];
 	char IV[SIZE_IV];
 	char salt[SIZE_SALT];
-	unsigned char plainBuffer[BUFFER_LEN];
+	unsigned char plainBuffer[messagelen];
 
 
 	//init compose the output buffer

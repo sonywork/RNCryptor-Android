@@ -4,7 +4,7 @@
 #include <android/log.h>
 
 // Set to 1 to enable debug log traces.
-#define DEBUG 1
+#define DEBUG 0
 
 // Set to 1 to optimize memory stores when generating plasma.
 #define OPTIMIZE_WRITES  1

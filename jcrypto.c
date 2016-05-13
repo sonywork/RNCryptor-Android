@@ -8,9 +8,9 @@
 
 void RegisterRawAES (JNIEnv *env);
 void RegisterBase64 (JNIEnv *env);
-JNIEXPORT jint JNICALL
 
-JNI_OnLoad(JavaVM *vm, void *reserved)
+
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
 {
 	JNIEnv *env;
 
@@ -45,8 +45,7 @@ JNI_OnLoad(JavaVM *vm, void *reserved)
  */
 static jbyteArray Encrypto(JNIEnv *env, jobject thiz, jbyteArray ba, jint tp)
 {
-//	monstartup("libjcryptoc.so");
-//	LOGPOS();
+
 	char * data = (*env)->GetByteArrayElements(env, ba, 0);
 //	int len = (*env)->GetArrayLength(env, ba);
 	int type = tp;
@@ -63,7 +62,6 @@ static jbyteArray Encrypto(JNIEnv *env, jobject thiz, jbyteArray ba, jint tp)
 	int cipherBufferLen;
 
 	void * cipherBuffer = malloc(CIPHER_BUFFER_LEN);
-	LOGD("CIPHER_BUFFER_LEN=%d",CIPHER_BUFFER_LEN);
 	cipherBufferLen = MGEncryptor(data, strlen(data), key, strlen(key), cipherBuffer);
 
 	unsigned long enDataLen;
@@ -78,9 +76,7 @@ static jbyteArray Encrypto(JNIEnv *env, jobject thiz, jbyteArray ba, jint tp)
 
 	(*env)->ReleaseByteArrayElements(env,ba,data,0);
 	free(enData);
-//	free(key);
-//	setenv("CPUPROFILE", "/sdcard/gmon.out", 1);
-//	moncleanup();
+
 
 	return jarrRV;
 }
@@ -123,6 +119,7 @@ static jbyteArray Decrypto(JNIEnv *env, jobject thiz, jbyteArray ba, jint tp)
 	free(plainBuffer);
 
 	(*env)->ReleaseByteArrayElements(env,ba,data,0);
+
 //	setenv("CPUPROFILE", "/sdcard/gmon.out", 1);
 //	moncleanup();
 	return jarrRV;
@@ -147,6 +144,7 @@ static jbyteArray Base64Encode(JNIEnv *env, jobject thiz, jbyteArray ba)
 	(*env)->SetByteArrayRegion(env,jarrRV, 0,enDataLen, enData);
 
 	(*env)->ReleaseByteArrayElements(env,ba,data,0);
+	free(enData);
 	return jarrRV;
 }
 
@@ -166,6 +164,7 @@ static jbyteArray Base64Decode(JNIEnv *env, jobject thiz, jbyteArray ba)
 	(*env)->SetByteArrayRegion(env,jarrRV, 0,deDataLen, deData);
 
 	(*env)->ReleaseByteArrayElements(env,ba,data,0);
+	free(deData);
 	return jarrRV;
 }
 
